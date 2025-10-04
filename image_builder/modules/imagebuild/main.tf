@@ -234,7 +234,7 @@ locals {
   copy_packer_scripts_step = {
     name = "gcr.io/google.com/cloudsdktool/cloud-sdk"
     env  = []
-    args = ["gcloud", "storage", "cp", "gs://$${_GCS_FOLDER}/*", "."]
+    args = ["gcloud", "storage", "cp", "gs://$${_GCS_FOLDER}*", "."]
     id   = "copy-packer-scripts"
   }
   customization_init_step = {
