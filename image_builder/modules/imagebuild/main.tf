@@ -92,7 +92,6 @@ resource "google_cloudbuild_trigger" "image_build_trigger" {
         var.customization_script_source == "" && var.testing_script_source == "" ? [] : [local.copy_packer_scripts_step],
         var.customization_script_source != "" ? [local.customization_init_step, local.customization_step] : [],
         local.add_label_step,
-        local.add_metadata_step,
         local.delete_temp_source_image_step,
         var.testing_script_source != "" ? [local.test_init_step, local.test_step] : [],
         var.target_image_family != "" ? [local.set_target_family_step] : []
@@ -262,15 +261,8 @@ locals {
   add_label_step = {
     name = "gcr.io/google.com/cloudsdktool/cloud-sdk"
     env  = []
-    args = ["gcloud", "compute", "images", "add-labels", "$${_SUFFIXED_TARGET_IMAGE_NAME}", "--labels=pipeline=$${TRIGGER_NAME},build-id=$${BUILD_ID}"]
+    args = ["gcloud", "compute", "images", "add-labels", "$${_SUFFIXED_TARGET_IMAGE_NAME}", "--labels=pipeline=$${TRIGGER_NAME},build-id=$${BUILD_ID},golden-image-source=projects-${_SOURCE_IMAGE_OS}-global-images-${_SOURCE_IMAGE}"]
     id   = "add-pipeline-label"
-  }
-  add_metadata_step = {
-    name = "gcr.io/google.com/cloudsdktool/cloud-sdk"
-    env = []
-    args = ["gcloud", "compute", "images", "update", "$${_SUFFIXED_TARGET_IMAGE_NAME}", "--update-user-metadata=golden-image-source=projects/$${_SOURCE_IMAGE_OS}/global/images/$${_SOURCE_IMAGE}"
- ]
-    id = "add-source-image-metadata"
   }
   delete_temp_source_image_step = {
     name = "gcr.io/google.com/cloudsdktool/cloud-sdk"
