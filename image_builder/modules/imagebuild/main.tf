@@ -261,7 +261,7 @@ locals {
   add_label_step = {
     name = "gcr.io/google.com/cloudsdktool/cloud-sdk"
     env  = []
-    args = ["gcloud", "compute", "images", "add-labels", "$${_SUFFIXED_TARGET_IMAGE_NAME}", "--labels=pipeline=$${TRIGGER_NAME},build-id=$${BUILD_ID},golden-image-source=$${_SOURCE_IMAGE}"]
+    args = ["gcloud", "compute", "images", "add-labels", "$${_SUFFIXED_TARGET_IMAGE_NAME}", "--labels=pipeline=$${TRIGGER_NAME},build-id=$${BUILD_ID},gke-golden-image=$${_SOURCE_IMAGE},gke-custom-version=$${BUILD_ID}"]
     id   = "add-pipeline-label"
   }
   delete_temp_source_image_step = {
