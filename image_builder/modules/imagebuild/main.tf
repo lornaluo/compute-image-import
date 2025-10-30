@@ -240,7 +240,7 @@ locals {
   customization_init_step = {
     name = local.packer_image
     env  = []
-    args = ["init", "customize.pkr.hcl"]
+    args = ["init", "-upgrade", "customize.pkr.hcl"]
     id   = "initialize-customization"
   }
   customization_step = {
